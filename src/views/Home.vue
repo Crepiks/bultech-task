@@ -3,6 +3,9 @@
     <bultech-header heading="Hello" @heading-change="handleHeadingChange" />
     <div class="home__content">
       <div class="home__tasks">
+        <div class="home__filters">
+          <base-input placeholder="Поиск" @input="handleSearchQueryChange" />
+        </div>
         <task-card
           v-for="task in tasks"
           :key="task.id"
@@ -26,6 +29,7 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 import Header from "@/components/common/Header";
+import BaseInput from "@/components/base/BaseInput";
 import TaskCard from "@/components/common/TaskCard";
 import TaskForm from "@/components/common/TaskForm";
 
@@ -33,6 +37,7 @@ export default {
   name: "Home",
   components: {
     "bultech-header": Header,
+    "base-input": BaseInput,
     "task-card": TaskCard,
     "task-form": TaskForm,
   },
@@ -42,6 +47,9 @@ export default {
   methods: {
     handleHeadingChange(value) {
       console.log(value);
+    },
+    handleSearchQueryChange(searchQuery) {
+      this.filterTasks(searchQuery);
     },
     handleCreateTaskFormSubmit(payload) {
       const id = this.generateTaskId(this.tasks);
@@ -67,7 +75,13 @@ export default {
     handleTaskDelete(taskId) {
       this.deleteTask(taskId);
     },
-    ...mapActions(["addTask", "completeTask", "uncompleteTask", "deleteTask"]),
+    ...mapActions([
+      "addTask",
+      "completeTask",
+      "uncompleteTask",
+      "deleteTask",
+      "filterTasks",
+    ]),
   },
 };
 </script>
@@ -82,6 +96,14 @@ export default {
 .home__tasks {
   margin-right: 20px;
   padding-bottom: 40px;
+}
+
+.home__filters {
+  margin-bottom: 20px;
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  justify-content: space-between;
+  column-gap: 40px;
 }
 
 .home__task-card {

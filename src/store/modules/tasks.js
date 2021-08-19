@@ -1,15 +1,23 @@
 const mutations = {
   SET_TASKS: "SET_TASKS",
   ADD_TASK: "ADD_TASK",
+  SET_SEARCH_QUERY: "SET_SEARCH_QUERY",
 };
 
 export default {
   state: {
     tasks: [],
+    filters: {
+      searchQuery: "",
+    },
   },
   actions: {
     addTask({ commit }, task) {
       commit(mutations.ADD_TASK, task);
+    },
+    deleteTask({ commit, state }, taskId) {
+      const tasks = state.tasks.filter((task) => task.id !== taskId);
+      commit(mutations.SET_TASKS, tasks);
     },
     completeTask({ commit, state }, taskId) {
       const { tasks } = state;
@@ -25,9 +33,8 @@ export default {
 
       commit(mutations.SET_TASKS, tasks);
     },
-    deleteTask({ commit, state }, taskId) {
-      const tasks = state.tasks.filter((task) => task.id !== taskId);
-      commit(mutations.SET_TASKS, tasks);
+    filterTasks({ commit }, searchQuery) {
+      commit(mutations.SET_SEARCH_QUERY, searchQuery);
     },
   },
   mutations: {
@@ -37,8 +44,15 @@ export default {
     [mutations.SET_TASKS](state, tasks) {
       state.tasks = tasks;
     },
+    [mutations.SET_SEARCH_QUERY](state, searchQuery) {
+      state.filters.searchQuery = searchQuery;
+    },
   },
   getters: {
-    tasks: (state) => state.tasks,
+    tasks: (state) => {
+      return state.tasks.filter(
+        (task) => task.title.indexOf(state.filters.searchQuery) !== -1
+      );
+    },
   },
 };

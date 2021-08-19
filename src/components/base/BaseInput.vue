@@ -5,6 +5,7 @@
     type="text"
     class="base-input"
     @change="$emit('change', $event.target.value)"
+    @input="$emit('input', $event.target.value)"
   />
 </template>
 
