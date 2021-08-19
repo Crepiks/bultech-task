@@ -38,10 +38,19 @@
           @complete="handleTaskComplete(task.id)"
           @uncomplete="handleTaskUncomplete(task.id)"
           @delete="handleTaskDelete(task.id)"
+          @edit="handleTaskEdit(task.id)"
         />
       </div>
       <div>
-        <task-form @submit="handleCreateTaskFormSubmit" />
+        <create-task-form @submit="handleCreateTaskFormSubmit" />
+        <edit-task-form
+          v-if="task.id"
+          :email="task.email"
+          :title="task.title"
+          :text="task.text"
+          class="home__edit-tasks-form"
+          @submit="handleEditTaskFormSubmit"
+        />
       </div>
     </div>
   </div>
@@ -55,7 +64,8 @@ import BaseInput from "@/components/base/BaseInput";
 import BaseSelect from "@/components/base/BaseSelect";
 import BaseSelectOption from "@/components/base/BaseSelectOption";
 import TaskCard from "@/components/common/TaskCard";
-import TaskForm from "@/components/common/TaskForm";
+import CreateTaskForm from "@/components/common/CreateTaskForm";
+import EditTaskForm from "@/components/common/EditTaskForm";
 
 export default {
   name: "Home",
@@ -65,13 +75,14 @@ export default {
     "base-select": BaseSelect,
     "base-select-option": BaseSelectOption,
     "task-card": TaskCard,
-    "task-form": TaskForm,
+    "create-task-form": CreateTaskForm,
+    "edit-task-form": EditTaskForm,
   },
   data: () => ({
     taskStatuses,
   }),
   computed: {
-    ...mapGetters(["projectName", "taskFilters", "tasks"]),
+    ...mapGetters(["projectName", "taskFilters", "tasks", "task"]),
   },
   methods: {
     handleHeadingChange(value) {
@@ -98,6 +109,12 @@ export default {
 
       return greatestId + 1;
     },
+    handleTaskEdit(taskId) {
+      this.setTask(taskId);
+    },
+    handleEditTaskFormSubmit(payload) {
+      this.updateTask({ taskId: this.task.id, payload });
+    },
     handleTaskComplete(taskId) {
       this.completeTask(taskId);
     },
@@ -115,6 +132,8 @@ export default {
       "deleteTask",
       "filterTasksBySearchQuery",
       "filterTasksByStatus",
+      "setTask",
+      "updateTask",
     ]),
   },
 };
@@ -125,11 +144,11 @@ export default {
   padding: 0 40px;
   display: grid;
   grid-template-columns: 3fr 2fr;
+  padding-bottom: 40px;
 }
 
 .home__tasks {
   margin-right: 20px;
-  padding-bottom: 40px;
 }
 
 .home__filters {
@@ -146,5 +165,9 @@ export default {
 
 .home__task-card:last-child {
   margin-bottom: 0;
+}
+
+.home__edit-tasks-form {
+  margin-top: 20px;
 }
 </style>

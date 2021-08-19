@@ -5,6 +5,9 @@
         Выполнено
       </base-button>
       <base-button v-else @click="handleComplete">Не выполнено</base-button>
+      <base-button class="task-card__edit-button" @click="handleEdit">
+        Редактировать
+      </base-button>
       <base-button
         danger
         class="task-card__delete-button"
@@ -51,6 +54,9 @@ export default {
     handleUncomplete() {
       this.$emit("uncomplete");
     },
+    handleEdit() {
+      this.$emit("edit");
+    },
     handleDelete() {
       this.$emit("delete");
     },
@@ -72,7 +78,8 @@ export default {
   right: 20px;
 }
 
-.task-card__delete-button {
+.task-card__delete-button,
+.task-card__edit-button {
   margin-left: 10px;
 }
 

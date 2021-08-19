@@ -6,12 +6,14 @@ const mutations = {
   ADD_TASK: "ADD_TASK",
   SET_SEARCH_QUERY: "SET_SEARCH_QUERY",
   SET_TASKS_STATUS: "SET_TASKS_STATUS",
+  SET_TASK: "SET_TASK",
 };
 
 export default {
   state: {
     projectName: "Проект по умолчанию",
     tasks: [],
+    task: {},
     filters: {
       searchQuery: "",
       status: taskStatuses.ALL,
@@ -26,6 +28,11 @@ export default {
     },
     deleteTask({ commit, state }, taskId) {
       const tasks = state.tasks.filter((task) => task.id !== taskId);
+
+      if (taskId === state.task.id) {
+        commit(mutations.SET_TASK, { taskId, payload: {} });
+      }
+
       commit(mutations.SET_TASKS, tasks);
     },
     completeTask({ commit, state }, taskId) {
@@ -48,6 +55,25 @@ export default {
     filterTasksByStatus({ commit }, status) {
       commit(mutations.SET_TASKS_STATUS, status);
     },
+    setTask({ commit, state }, taskId) {
+      const task = state.tasks.find((task) => task.id === taskId);
+
+      if (!task) {
+        throw new Error(`Task with ID ${taskId} does not exist`);
+      }
+
+      commit(mutations.SET_TASK, task);
+    },
+    updateTask({ commit, state }, { taskId, payload }) {
+      const { tasks } = state;
+      const task = tasks.find((task) => task.id === taskId);
+
+      task.email = payload.email;
+      task.title = payload.title;
+      task.text = payload.text;
+
+      commit(mutations.SET_TASKS, tasks);
+    },
   },
   mutations: {
     [mutations.SET_PROJECT_NAME](state, projectName) {
@@ -64,6 +90,9 @@ export default {
     },
     [mutations.SET_TASKS_STATUS](state, status) {
       state.filters.status = status;
+    },
+    [mutations.SET_TASK](state, task) {
+      state.task = task;
     },
   },
   getters: {
@@ -84,6 +113,7 @@ export default {
       return filterUncompletedTasks(tasksFilteredBySearchQuery);
     },
     taskFilters: (state) => state.filters,
+    task: (state) => state.task,
   },
 };
 
