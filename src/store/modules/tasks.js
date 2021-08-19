@@ -1,12 +1,10 @@
-import { tasks as mockTasks } from "@/data/tasks";
-
 const mutations = {
   ADD_TASK: "SET_TASKS",
 };
 
 export default {
   state: {
-    tasks: mockTasks,
+    tasks: [],
   },
   actions: {
     addTask({ commit }, task) {

@@ -5,7 +5,7 @@
       <div class="home__tasks">
         <task-card
           v-for="task in tasks"
-          :key="task.id"
+          :key="task.createdAt.toString()"
           :email="task.email"
           :title="task.title"
           :text="task.text"
@@ -40,8 +40,8 @@ export default {
       console.log(value);
     },
     handleCreateTaskFormSubmit(payload) {
-      console.log(payload);
-      this.addTask(payload);
+      const createdAt = Date.now();
+      this.addTask({ ...payload, createdAt });
     },
     ...mapActions(["addTask"]),
   },
@@ -57,6 +57,7 @@ export default {
 
 .home__tasks {
   margin-right: 20px;
+  padding-bottom: 40px;
 }
 
 .home__task-card {
