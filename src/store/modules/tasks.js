@@ -18,6 +18,13 @@ export default {
 
       commit(mutations.SET_TASKS, tasks);
     },
+    uncompleteTask({ commit, state }, taskId) {
+      const { tasks } = state;
+      const task = tasks.find((task) => task.id === taskId);
+      task.completed = false;
+
+      commit(mutations.SET_TASKS, tasks);
+    },
     deleteTask({ commit, state }, taskId) {
       const tasks = state.tasks.filter((task) => task.id !== taskId);
       commit(mutations.SET_TASKS, tasks);

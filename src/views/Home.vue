@@ -62,12 +62,12 @@ export default {
       this.completeTask(taskId);
     },
     handleTaskUncomplete(taskId) {
-      console.log("Uncompleting", taskId);
+      this.uncompleteTask(taskId);
     },
     handleTaskDelete(taskId) {
       this.deleteTask(taskId);
     },
-    ...mapActions(["addTask", "completeTask", "deleteTask"]),
+    ...mapActions(["addTask", "completeTask", "uncompleteTask", "deleteTask"]),
   },
 };
 </script>
