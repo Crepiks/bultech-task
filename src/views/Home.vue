@@ -1,14 +1,21 @@
 <template>
-  <div class="home">home page</div>
+  <div class="home">
+    <bultech-header heading="Hello" @heading-change="handleHeadingChange" />
+  </div>
 </template>
 
 <script>
-import HelloWorld from "@/components/HelloWorld.vue";
+import Header from "@/components/common/Header";
 
 export default {
   name: "Home",
   components: {
-    HelloWorld,
+    "bultech-header": Header,
+  },
+  methods: {
+    handleHeadingChange(value) {
+      console.log(value);
+    },
   },
 };
 </script>
