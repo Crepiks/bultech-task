@@ -9,7 +9,10 @@
           :email="task.email"
           :title="task.title"
           :text="task.text"
+          :completed="task.completed"
           class="home__task-card"
+          @complete="handleTaskComplete(task.id)"
+          @uncomplete="handleTaskUncomplete(task.id)"
         />
       </div>
       <div>
@@ -54,7 +57,13 @@ export default {
 
       return greatestId + 1;
     },
-    ...mapActions(["addTask"]),
+    handleTaskComplete(taskId) {
+      this.completeTask(taskId);
+    },
+    handleTaskUncomplete(taskId) {
+      console.log("Uncompleting", taskId);
+    },
+    ...mapActions(["addTask", "completeTask"]),
   },
 };
 </script>

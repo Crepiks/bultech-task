@@ -1,11 +1,17 @@
 <template>
-  <button class="button">
+  <button class="button" @click="handleClick">
     <slot />
   </button>
 </template>
 
 <script>
-export default {};
+export default {
+  methods: {
+    handleClick() {
+      this.$emit("click");
+    },
+  },
+};
 </script>
 
 <style scoped>
