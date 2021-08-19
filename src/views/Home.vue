@@ -5,7 +5,7 @@
       <div class="home__tasks">
         <task-card
           v-for="task in tasks"
-          :key="task.createdAt.toString()"
+          :key="task.id"
           :email="task.email"
           :title="task.title"
           :text="task.text"
@@ -40,8 +40,19 @@ export default {
       console.log(value);
     },
     handleCreateTaskFormSubmit(payload) {
+      const id = this.generateTaskId(this.tasks);
       const createdAt = Date.now();
-      this.addTask({ ...payload, createdAt });
+      const completed = false;
+
+      this.addTask({ ...payload, createdAt, completed, id });
+    },
+    generateTaskId(tasks) {
+      const greatestId = tasks.reduce(
+        (max, task) => (task.id > max ? task.id : max),
+        0
+      );
+
+      return greatestId + 1;
     },
     ...mapActions(["addTask"]),
   },
