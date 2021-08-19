@@ -32,9 +32,14 @@ export default {
     editingEnabled: false,
     edittedHeading: "",
   }),
+  watch: {
+    heading(newHeading) {
+      this.heading = newHeading;
+    },
+  },
   methods: {
     handleHeadingChange() {
-      this.$emit("heading-change", this.heading);
+      this.$emit("heading-change", this.edittedHeading);
       this.disabledEditingMode();
     },
     enableEditingMode() {

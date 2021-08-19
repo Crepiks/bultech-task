@@ -1,6 +1,9 @@
 <template>
   <div class="home">
-    <bultech-header heading="Hello" @heading-change="handleHeadingChange" />
+    <bultech-header
+      :heading="projectName"
+      @heading-change="handleHeadingChange"
+    />
     <div class="home__content">
       <div class="home__tasks">
         <div class="home__filters">
@@ -42,11 +45,11 @@ export default {
     "task-form": TaskForm,
   },
   computed: {
-    ...mapGetters(["tasks"]),
+    ...mapGetters(["projectName", "tasks"]),
   },
   methods: {
     handleHeadingChange(value) {
-      console.log(value);
+      this.updateProjectName(value);
     },
     handleSearchQueryChange(searchQuery) {
       this.filterTasks(searchQuery);
@@ -76,6 +79,7 @@ export default {
       this.deleteTask(taskId);
     },
     ...mapActions([
+      "updateProjectName",
       "addTask",
       "completeTask",
       "uncompleteTask",

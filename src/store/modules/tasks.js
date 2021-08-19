@@ -1,4 +1,5 @@
 const mutations = {
+  SET_PROJECT_NAME: "SET_PROJECT_NAME",
   SET_TASKS: "SET_TASKS",
   ADD_TASK: "ADD_TASK",
   SET_SEARCH_QUERY: "SET_SEARCH_QUERY",
@@ -6,12 +7,16 @@ const mutations = {
 
 export default {
   state: {
+    projectName: "Проект по умолчанию",
     tasks: [],
     filters: {
       searchQuery: "",
     },
   },
   actions: {
+    updateProjectName({ commit }, projectName) {
+      commit(mutations.SET_PROJECT_NAME, projectName);
+    },
     addTask({ commit }, task) {
       commit(mutations.ADD_TASK, task);
     },
@@ -38,6 +43,9 @@ export default {
     },
   },
   mutations: {
+    [mutations.SET_PROJECT_NAME](state, projectName) {
+      state.projectName = projectName;
+    },
     [mutations.ADD_TASK](state, task) {
       state.tasks = [...state.tasks, task];
     },
@@ -49,6 +57,7 @@ export default {
     },
   },
   getters: {
+    projectName: (state) => state.projectName,
     tasks: (state) => {
       return state.tasks.filter(
         (task) => task.title.indexOf(state.filters.searchQuery) !== -1
