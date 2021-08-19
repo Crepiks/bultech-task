@@ -1,5 +1,6 @@
 <template>
   <input
+    :value="value"
     :placeholder="placeholder"
     type="text"
     class="base-input"

@@ -20,24 +20,10 @@
 </template>
 
 <script>
+import { mapGetters, mapActions } from "vuex";
 import Header from "@/components/common/Header";
 import TaskCard from "@/components/common/TaskCard";
 import TaskForm from "@/components/common/TaskForm";
-
-const tasks = [
-  {
-    id: 1,
-    email: "sayazhan.onlassyn@mail.ru",
-    title: "Сделать тестовое задание",
-    text: "Выполнить тестовое задание от компании Bultech на позицию Senior Frontend Developer",
-  },
-  {
-    id: 2,
-    email: "sayazhan.onlassyn@mail.ru",
-    title: "Сделать тестовое задание",
-    text: "Выполнить тестовое задание от компании Bultech на позицию Senior Frontend Developer",
-  },
-];
 
 export default {
   name: "Home",
@@ -46,16 +32,18 @@ export default {
     "task-card": TaskCard,
     "task-form": TaskForm,
   },
-  data: () => ({
-    tasks,
-  }),
+  computed: {
+    ...mapGetters(["tasks"]),
+  },
   methods: {
     handleHeadingChange(value) {
       console.log(value);
     },
     handleCreateTaskFormSubmit(payload) {
       console.log(payload);
+      this.addTask(payload);
     },
+    ...mapActions(["addTask"]),
   },
 };
 </script>

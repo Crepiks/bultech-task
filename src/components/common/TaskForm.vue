@@ -45,6 +45,12 @@ export default {
       };
 
       this.$emit("submit", payload);
+      this.resetFormFields();
+    },
+    resetFormFields() {
+      this.form.email = "";
+      this.form.title = "";
+      this.form.text = "";
     },
   },
 };

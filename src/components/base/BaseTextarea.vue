@@ -1,5 +1,6 @@
 <template>
   <textarea
+    :value="value"
     :placeholder="placeholder"
     rows="6"
     class="base-textarea"
