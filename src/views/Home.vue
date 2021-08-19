@@ -13,6 +13,7 @@
           class="home__task-card"
           @complete="handleTaskComplete(task.id)"
           @uncomplete="handleTaskUncomplete(task.id)"
+          @delete="handleTaskDelete(task.id)"
         />
       </div>
       <div>
@@ -63,7 +64,10 @@ export default {
     handleTaskUncomplete(taskId) {
       console.log("Uncompleting", taskId);
     },
-    ...mapActions(["addTask", "completeTask"]),
+    handleTaskDelete(taskId) {
+      this.deleteTask(taskId);
+    },
+    ...mapActions(["addTask", "completeTask", "deleteTask"]),
   },
 };
 </script>

@@ -18,6 +18,10 @@ export default {
 
       commit(mutations.SET_TASKS, tasks);
     },
+    deleteTask({ commit, state }, taskId) {
+      const tasks = state.tasks.filter((task) => task.id !== taskId);
+      commit(mutations.SET_TASKS, tasks);
+    },
   },
   mutations: {
     [mutations.ADD_TASK](state, task) {

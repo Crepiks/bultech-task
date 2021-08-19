@@ -1,11 +1,21 @@
 <template>
-  <button class="button" @click="handleClick">
+  <button
+    class="button"
+    :class="{ button_danger: danger }"
+    @click="handleClick"
+  >
     <slot />
   </button>
 </template>
 
 <script>
 export default {
+  props: {
+    danger: {
+      type: Boolean,
+      default: false,
+    },
+  },
   methods: {
     handleClick() {
       this.$emit("click");
@@ -28,5 +38,10 @@ export default {
 
 .button:hover {
   opacity: 0.7;
+}
+
+.button_danger {
+  color: white;
+  background-color: #f5222d;
 }
 </style>
