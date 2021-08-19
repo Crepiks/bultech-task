@@ -1,8 +1,11 @@
+import { taskStatuses } from "@/config/tasks";
+
 const mutations = {
   SET_PROJECT_NAME: "SET_PROJECT_NAME",
   SET_TASKS: "SET_TASKS",
   ADD_TASK: "ADD_TASK",
   SET_SEARCH_QUERY: "SET_SEARCH_QUERY",
+  SET_TASKS_STATUS: "SET_TASKS_STATUS",
 };
 
 export default {
@@ -11,6 +14,7 @@ export default {
     tasks: [],
     filters: {
       searchQuery: "",
+      status: taskStatuses.ALL,
     },
   },
   actions: {
@@ -38,8 +42,11 @@ export default {
 
       commit(mutations.SET_TASKS, tasks);
     },
-    filterTasks({ commit }, searchQuery) {
+    filterTasksBySearchQuery({ commit }, searchQuery) {
       commit(mutations.SET_SEARCH_QUERY, searchQuery);
+    },
+    filterTasksByStatus({ commit }, status) {
+      commit(mutations.SET_TASKS_STATUS, status);
     },
   },
   mutations: {
@@ -55,13 +62,35 @@ export default {
     [mutations.SET_SEARCH_QUERY](state, searchQuery) {
       state.filters.searchQuery = searchQuery;
     },
+    [mutations.SET_TASKS_STATUS](state, status) {
+      state.filters.status = status;
+    },
   },
   getters: {
     projectName: (state) => state.projectName,
     tasks: (state) => {
-      return state.tasks.filter(
+      const tasksFilteredBySearchQuery = state.tasks.filter(
         (task) => task.title.indexOf(state.filters.searchQuery) !== -1
       );
+
+      if (state.filters.status === taskStatuses.ALL) {
+        return tasksFilteredBySearchQuery;
+      }
+
+      if (state.filters.status === taskStatuses.COMPLETED) {
+        return filterCompeletedTasks(tasksFilteredBySearchQuery);
+      }
+
+      return filterUncompletedTasks(tasksFilteredBySearchQuery);
     },
+    taskFilters: (state) => state.filters,
   },
 };
+
+function filterCompeletedTasks(tasks) {
+  return tasks.filter((task) => task.completed);
+}
+
+function filterUncompletedTasks(tasks) {
+  return tasks.filter((task) => !task.completed);
+}

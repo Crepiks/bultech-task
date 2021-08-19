@@ -4,7 +4,7 @@
       <base-button v-if="completed" @click="handleUncomplete">
         Выполнено
       </base-button>
-      <base-button v-else @click="handleComplete"> Не выполнено </base-button>
+      <base-button v-else @click="handleComplete">Не выполнено</base-button>
       <base-button
         danger
         class="task-card__delete-button"

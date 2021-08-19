@@ -7,7 +7,25 @@
     <div class="home__content">
       <div class="home__tasks">
         <div class="home__filters">
-          <base-input placeholder="Поиск" @input="handleSearchQueryChange" />
+          <base-input
+            :value="taskFilters.searchQuery"
+            placeholder="Поиск"
+            @input="handleSearchQueryChange"
+          />
+          <base-select
+            :value="taskFilters.status"
+            @change="handleStatusFilterChange"
+          >
+            <base-select-option :value="taskStatuses.ALL">
+              Все
+            </base-select-option>
+            <base-select-option :value="taskStatuses.COMPLETED">
+              Выполненные
+            </base-select-option>
+            <base-select-option :value="taskStatuses.UNCOMPLETED">
+              Не выполненные
+            </base-select-option>
+          </base-select>
         </div>
         <task-card
           v-for="task in tasks"
@@ -31,8 +49,11 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
+import { taskStatuses } from "@/config/tasks";
 import Header from "@/components/common/Header";
 import BaseInput from "@/components/base/BaseInput";
+import BaseSelect from "@/components/base/BaseSelect";
+import BaseSelectOption from "@/components/base/BaseSelectOption";
 import TaskCard from "@/components/common/TaskCard";
 import TaskForm from "@/components/common/TaskForm";
 
@@ -41,18 +62,26 @@ export default {
   components: {
     "bultech-header": Header,
     "base-input": BaseInput,
+    "base-select": BaseSelect,
+    "base-select-option": BaseSelectOption,
     "task-card": TaskCard,
     "task-form": TaskForm,
   },
+  data: () => ({
+    taskStatuses,
+  }),
   computed: {
-    ...mapGetters(["projectName", "tasks"]),
+    ...mapGetters(["projectName", "taskFilters", "tasks"]),
   },
   methods: {
     handleHeadingChange(value) {
       this.updateProjectName(value);
     },
     handleSearchQueryChange(searchQuery) {
-      this.filterTasks(searchQuery);
+      this.filterTasksBySearchQuery(searchQuery);
+    },
+    handleStatusFilterChange(status) {
+      this.filterTasksByStatus(status);
     },
     handleCreateTaskFormSubmit(payload) {
       const id = this.generateTaskId(this.tasks);
@@ -84,7 +113,8 @@ export default {
       "completeTask",
       "uncompleteTask",
       "deleteTask",
-      "filterTasks",
+      "filterTasksBySearchQuery",
+      "filterTasksByStatus",
     ]),
   },
 };
