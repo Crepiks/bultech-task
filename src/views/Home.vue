@@ -41,7 +41,7 @@
           @edit="handleTaskEdit(task.id)"
         />
       </div>
-      <div>
+      <aside class="home__aside">
         <create-task-form @submit="handleCreateTaskFormSubmit" />
         <edit-task-form
           v-if="task.id"
@@ -51,7 +51,7 @@
           class="home__edit-tasks-form"
           @submit="handleEditTaskFormSubmit"
         />
-      </div>
+      </aside>
     </div>
   </div>
 </template>
@@ -141,10 +141,9 @@ export default {
 
 <style scoped>
 .home__content {
-  padding: 0 40px;
+  padding: 0 40px 40px;
   display: grid;
   grid-template-columns: 3fr 2fr;
-  padding-bottom: 40px;
 }
 
 .home__tasks {
@@ -156,7 +155,7 @@ export default {
   display: grid;
   grid-template-columns: 2fr 1fr;
   justify-content: space-between;
-  column-gap: 40px;
+  column-gap: 20px;
 }
 
 .home__task-card {
@@ -169,5 +168,25 @@ export default {
 
 .home__edit-tasks-form {
   margin-top: 20px;
+}
+
+@media all and (max-width: 1000px) {
+  .home__content {
+    grid-template-columns: 1fr;
+  }
+
+  .home__tasks {
+    margin-right: 0;
+  }
+
+  .home__aside {
+    margin-top: 20px;
+  }
+}
+
+@media all and (max-width: 500px) {
+  .home__content {
+    padding: 0 16px 40px;
+  }
 }
 </style>

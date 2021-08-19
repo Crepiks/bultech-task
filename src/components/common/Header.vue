@@ -66,6 +66,7 @@ export default {
 }
 
 .header__input {
+  max-width: 300px;
   margin-right: 20px;
 }
 
@@ -82,5 +83,11 @@ export default {
 
 .header__icon {
   font-size: 20px;
+}
+
+@media all and (max-width: 500px) {
+  .header {
+    padding: 30px 16px;
+  }
 }
 </style>
