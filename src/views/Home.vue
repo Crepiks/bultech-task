@@ -12,6 +12,9 @@
           class="home__task-card"
         />
       </div>
+      <div>
+        <task-form @submit="handleCreateTaskFormSubmit" />
+      </div>
     </div>
   </div>
 </template>
@@ -19,6 +22,7 @@
 <script>
 import Header from "@/components/common/Header";
 import TaskCard from "@/components/common/TaskCard";
+import TaskForm from "@/components/common/TaskForm";
 
 const tasks = [
   {
@@ -40,6 +44,7 @@ export default {
   components: {
     "bultech-header": Header,
     "task-card": TaskCard,
+    "task-form": TaskForm,
   },
   data: () => ({
     tasks,
@@ -47,6 +52,9 @@ export default {
   methods: {
     handleHeadingChange(value) {
       console.log(value);
+    },
+    handleCreateTaskFormSubmit(payload) {
+      console.log(payload);
     },
   },
 };
@@ -57,6 +65,10 @@ export default {
   padding: 0 40px;
   display: grid;
   grid-template-columns: 3fr 2fr;
+}
+
+.home__tasks {
+  margin-right: 20px;
 }
 
 .home__task-card {

@@ -1,8 +1,8 @@
 <template>
-  <input
+  <textarea
     :placeholder="placeholder"
-    type="text"
-    class="base-input"
+    rows="6"
+    class="base-textarea"
     @change="$emit('change', $event.target.value)"
   />
 </template>
@@ -27,10 +27,12 @@ export default {
 </script>
 
 <style scoped>
-.base-input {
+.base-textarea {
   width: 100%;
   padding: 14px 18px;
   font-size: 16px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   border-radius: 10px;
   border: none;
   outline: none;

@@ -62,12 +62,11 @@ export default {
 
 .header__input {
   margin-right: 20px;
-  background-color: #f6d06785;
 }
 
 .header__icon-wrapper {
-  width: 40px;
-  height: 40px;
+  width: 50px;
+  height: 50px;
   display: flex;
   justify-content: center;
   align-items: center;
