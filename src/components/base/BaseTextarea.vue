@@ -1,6 +1,7 @@
 <template>
   <textarea
     :value="value"
+    :required="required"
     :placeholder="placeholder"
     rows="6"
     class="base-textarea"
@@ -18,6 +19,10 @@ export default {
     value: {
       type: String,
       default: "",
+    },
+    required: {
+      type: Boolean,
+      default: false,
     },
     placeholder: {
       type: String,

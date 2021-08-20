@@ -1,8 +1,9 @@
 <template>
   <input
+    :type="type"
     :value="value"
     :placeholder="placeholder"
-    type="text"
+    :required="required"
     class="base-input"
     @change="$emit('change', $event.target.value)"
     @input="$emit('input', $event.target.value)"
@@ -20,9 +21,17 @@ export default {
       type: String,
       default: "",
     },
+    type: {
+      type: String,
+      default: "text",
+    },
     placeholder: {
       type: String,
       default: "",
+    },
+    required: {
+      type: Boolean,
+      default: false,
     },
   },
 };

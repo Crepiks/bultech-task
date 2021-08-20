@@ -3,15 +3,18 @@
     <h3 class="task-form__heading">Создать задание</h3>
     <base-input
       v-model="form.email"
+      type="email"
+      required
       placeholder="Почта"
       class="task-form__input"
     />
     <base-input
       v-model="form.title"
+      required
       placeholder="Заголовок"
       class="task-form__input"
     />
-    <base-textarea v-model="form.text" placeholder="Текст задачи" />
+    <base-textarea v-model="form.text" required placeholder="Текст задачи" />
     <div class="task-form__button-wrapper">
       <base-button>Создать</base-button>
     </div>
