@@ -134,8 +134,16 @@ export default {
       "filterTasksByStatus",
       "setTask",
       "updateTask",
+      "loadStateFromLocalStorage",
+      "saveStateToLocalStorage",
     ]),
   },
+  // beforeMount() {
+  //   this.loadStateFromLocalStorage();
+  // },
+  // beforeDestroy() {
+  //   this.saveStateToLocalStorage();
+  // },
 };
 </script>
 

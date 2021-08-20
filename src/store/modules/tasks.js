@@ -9,19 +9,31 @@ const mutations = {
   SET_TASK: "SET_TASK",
 };
 
+const localStorageKeys = {
+  projectName: "projectName",
+  tasks: "tasks",
+  task: "task",
+  taskFilters: "taskFilters",
+};
+
+const defaultProjectName = "Проект по умолчанию";
+
+const defaultFilters = {
+  searchQuery: "",
+  status: taskStatuses.ALL,
+};
+
 export default {
   state: {
-    projectName: "Проект по умолчанию",
-    tasks: [],
-    task: {},
-    filters: {
-      searchQuery: "",
-      status: taskStatuses.ALL,
-    },
+    projectName: getProjectNameFromLocalStorage() || defaultProjectName,
+    tasks: getTasksFromLocalStorage() || [],
+    task: getTaskFromLocalStorage() || [],
+    filters: getTaskFiltersFromLocalStorage() || { ...defaultFilters },
   },
   actions: {
     updateProjectName({ commit }, projectName) {
       commit(mutations.SET_PROJECT_NAME, projectName);
+      saveProjectNameToLocalStorage(projectName);
     },
     addTask({ commit }, task) {
       commit(mutations.ADD_TASK, task);
@@ -40,6 +52,8 @@ export default {
       const task = tasks.find((task) => task.id === taskId);
       task.completed = true;
 
+      saveTasksToLocalStorage(tasks);
+
       commit(mutations.SET_TASKS, tasks);
     },
     uncompleteTask({ commit, state }, taskId) {
@@ -47,13 +61,17 @@ export default {
       const task = tasks.find((task) => task.id === taskId);
       task.completed = false;
 
+      saveTasksToLocalStorage(tasks);
+
       commit(mutations.SET_TASKS, tasks);
     },
-    filterTasksBySearchQuery({ commit }, searchQuery) {
+    filterTasksBySearchQuery({ commit, state }, searchQuery) {
       commit(mutations.SET_SEARCH_QUERY, searchQuery);
+      saveTaskFiltersToLocalStorage(state.filters);
     },
-    filterTasksByStatus({ commit }, status) {
+    filterTasksByStatus({ commit, state }, status) {
       commit(mutations.SET_TASKS_STATUS, status);
+      saveTaskFiltersToLocalStorage(state.filters);
     },
     setTask({ commit, state }, taskId) {
       const task = state.tasks.find((task) => task.id === taskId);
@@ -63,6 +81,7 @@ export default {
       }
 
       commit(mutations.SET_TASK, task);
+      saveTaskToLocalStorage(task);
     },
     updateTask({ commit, state }, { taskId, payload }) {
       const { tasks } = state;
@@ -73,6 +92,8 @@ export default {
       task.text = payload.text;
 
       commit(mutations.SET_TASKS, tasks);
+      saveTaskToLocalStorage(task);
+      saveTasksToLocalStorage(tasks);
     },
   },
   mutations: {
@@ -116,6 +137,44 @@ export default {
     task: (state) => state.task,
   },
 };
+
+function getProjectNameFromLocalStorage() {
+  return localStorage.getItem(localStorageKeys.projectName);
+}
+
+function saveProjectNameToLocalStorage(projectName) {
+  localStorage.setItem(localStorageKeys.projectName, projectName);
+}
+
+function getTasksFromLocalStorage() {
+  const serializedTasks = localStorage.getItem(localStorageKeys.tasks);
+  return JSON.parse(serializedTasks);
+}
+
+function saveTasksToLocalStorage(tasks) {
+  const serializedTasks = JSON.stringify(tasks);
+  localStorage.setItem(localStorageKeys.tasks, serializedTasks);
+}
+
+function getTaskFromLocalStorage() {
+  const serializedTask = localStorage.getItem(localStorageKeys.task);
+  return JSON.parse(serializedTask);
+}
+
+function saveTaskToLocalStorage(task) {
+  const serializedTask = JSON.stringify(task);
+  localStorage.setItem(localStorageKeys.task, serializedTask);
+}
+
+function getTaskFiltersFromLocalStorage() {
+  const serializedFilters = localStorage.getItem(localStorageKeys.taskFilters);
+  return JSON.parse(serializedFilters);
+}
+
+function saveTaskFiltersToLocalStorage(filters) {
+  const serializedFilters = JSON.stringify(filters);
+  localStorage.setItem(localStorageKeys.taskFilters, serializedFilters);
+}
 
 function filterCompeletedTasks(tasks) {
   return tasks.filter((task) => task.completed);
