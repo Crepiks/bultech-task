@@ -3,7 +3,6 @@ import { taskStatuses } from "@/config/tasks";
 const mutations = {
   SET_PROJECT_NAME: "SET_PROJECT_NAME",
   SET_TASKS: "SET_TASKS",
-  ADD_TASK: "ADD_TASK",
   SET_SEARCH_QUERY: "SET_SEARCH_QUERY",
   SET_TASKS_STATUS: "SET_TASKS_STATUS",
   SET_TASK: "SET_TASK",
@@ -35,8 +34,10 @@ export default {
       commit(mutations.SET_PROJECT_NAME, projectName);
       saveProjectNameToLocalStorage(projectName);
     },
-    addTask({ commit }, task) {
-      commit(mutations.ADD_TASK, task);
+    addTask({ commit, state }, task) {
+      const tasks = [...state.tasks, task];
+      commit(mutations.SET_TASKS, tasks);
+      saveTasksToLocalStorage(tasks);
     },
     deleteTask({ commit, state }, taskId) {
       const tasks = state.tasks.filter((task) => task.id !== taskId);
@@ -46,6 +47,8 @@ export default {
       }
 
       commit(mutations.SET_TASKS, tasks);
+      saveTasksToLocalStorage(tasks);
+      saveTaskToLocalStorage({});
     },
     completeTask({ commit, state }, taskId) {
       const { tasks } = state;
@@ -99,9 +102,6 @@ export default {
   mutations: {
     [mutations.SET_PROJECT_NAME](state, projectName) {
       state.projectName = projectName;
-    },
-    [mutations.ADD_TASK](state, task) {
-      state.tasks = [...state.tasks, task];
     },
     [mutations.SET_TASKS](state, tasks) {
       state.tasks = tasks;
